@@ -1,0 +1,67 @@
+{
+    "maxIterAtScale": [
+        20000,
+        48000,
+        48000,
+        48000,
+        48000,
+        48000
+    ],
+    "alphaJumpMode": "linear",
+    "alphaNJumps": [
+        0,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+    ],
+    "alphaSizeJumps": [
+        0,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+    ],
+    "depthScales": [
+        128,
+        128,
+        128,
+        128,
+        64,
+        32
+    ],
+    "miniBatchSize": 16,
+    "dimLatentVector": 30,
+    "initBiasToZero": true,
+    "perChannelNormalization": true,
+    "lossMode": "WGANGP",
+    "lambdaGP": 10.0,
+    "leakyness": 0.2,
+    "epsilonD": 0.001,
+    "miniBatchStdDev": true,
+    "baseLearningRate": 0.001,
+    "dimOutput": 3,
+    "weightConditionG": 0.0,
+    "weightConditionD": 0.0,
+    "attribKeysOrder": null,
+    "means": [
+        0.42264423,
+        0.35897408,
+        0.32529892
+    ],
+    "stds": [
+        0.49397984,
+        0.4252807,
+        0.39518041
+    ],
+    "GDPP": false
+}
