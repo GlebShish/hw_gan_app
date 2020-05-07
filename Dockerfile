@@ -1,11 +1,11 @@
 FROM pytorch/pytorch:latest
 
-RUN pip install matplotlib /
+RUN pip install matplotlib \
     scipy \
     anvil-uplink
 
 COPY . .
 
-ARG TOKEN
+ENV TOKEN="change-it"
 
-CMD ["python", "main.py", ${TOKEN}]
+CMD python main.py ${TOKEN}
