@@ -2,7 +2,7 @@ import os
 import argparse
 import logging
 import numpy as np
-from torch.utils.tensorboard import SummaryWriter
+#from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 import torch
 import torch.optim as optim
@@ -13,7 +13,7 @@ import json
 cudnn.benchmark = True
 
 import matplotlib.pyplot as plt
-import cv2
+#import cv2
 # import utils
 from models.progressive_gan import ProgressiveGAN as ProGAN
 from models.model_module import FC_selu_first
@@ -209,6 +209,11 @@ def test():
 	np.save('check', b)
 
 
+sis = ModelManager('sis')
+mps = ModelManager('mps')
+obj = ModelManager('object')
+
+
 if __name__ == '__main__':
 
 	if len(sys.argv) < 2:
@@ -217,6 +222,6 @@ if __name__ == '__main__':
 	while True:
 		anvil.server.connect(sys.argv[1])
 
-		sis = ModelManager('sis')
-		mps = ModelManager('mps')
-		obj = ModelManager('object')
+		#sis = ModelManager('sis')
+		#mps = ModelManager('mps')
+		#obj = ModelManager('object')

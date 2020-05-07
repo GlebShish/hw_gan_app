@@ -475,7 +475,7 @@ class BaseGAN():
             - path (string): file where the model is stored
         """
 
-        in_state = torch.load(path)
+        in_state = torch.load(path, map_location={'cuda:0': 'cpu'})
         self.load_state_dict(in_state,
                              loadG=loadG,
                              loadD=loadD,
