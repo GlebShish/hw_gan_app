@@ -184,6 +184,7 @@ class ModelManager:
 @anvil.server.callable
 def get_sis():
     a, b = sis.predict(1, 1)
+
     f, axarr = plt.subplots(1, 3, dpi=300)
     facies_img = a[0][FACIES]
     facies_img[facies_img < 0.5] = 0
@@ -195,11 +196,13 @@ def get_sis():
     perm_img = a[0][PERM]
     perm_img[facies_img == 0] = 0
 
-    axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    c1 = axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
     show_dots(axarr[0])
-    axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
-    axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
-
+    c2 = axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[1])
+    c3 = axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[2])
+    
     return anvil.mpl_util.plot_image()
 
 
@@ -222,7 +225,9 @@ def get_mps():
     axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
     show_dots(axarr[0])
     axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[1])
     axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[2])
 
     return anvil.mpl_util.plot_image()
 
@@ -231,8 +236,8 @@ def show_dots(axs):
     idx_pos = np.where(vals[:, 0] < 0.5)
     idx_neg = np.where(vals[:, 0] > 0.5)
 
-    axs.scatter(ijs[idx_pos][:, 0], ijs[idx_pos][:, 1], marker='+')
-    axs.scatter(ijs[idx_neg][:, 0], ijs[idx_neg][:, 1], marker='*')
+    axs.scatter(ijs[idx_pos][:, 0], ijs[idx_pos][:, 1], marker='+', color='green')
+    axs.scatter(ijs[idx_neg][:, 0], ijs[idx_neg][:, 1], marker='*', color='blue')
 
 
 @anvil.server.callable
@@ -254,7 +259,9 @@ def get_object():
     axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
     show_dots(axarr[0])
     axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[1])
     axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[2])
 
     return anvil.mpl_util.plot_image()
 
