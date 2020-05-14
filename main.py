@@ -178,7 +178,11 @@ class ModelManager:
 @anvil.server.callable
 def get_sis():
   a, b = sis.predict(1, 1)
-  plt.imshow(a[0].T)
+
+  f, axarr = plt.subplots(1,3, dpi=300) 
+  axarr[0].imshow(a[0][FACIES].T)
+  axarr[1].imshow(a[0][PORO].T)
+  axarr[2].imshow(a[0][PERM].T)
 
   return anvil.mpl_util.plot_image()
 
@@ -186,7 +190,11 @@ def get_sis():
 @anvil.server.callable
 def get_mps():
   a, b = mps.predict(1, 1)
-  plt.imshow(a[0].T)
+
+  f, axarr = plt.subplots(1,3, dpi=300) 
+  axarr[0].imshow(a[0][FACIES].T)
+  axarr[1].imshow(a[0][PORO].T)
+  axarr[2].imshow(a[0][PERM].T)
 
   return anvil.mpl_util.plot_image()
 
@@ -194,7 +202,11 @@ def get_mps():
 @anvil.server.callable
 def get_object():
   a, b = obj.predict(1, 1)
-  plt.imshow(a[0].T)
+  
+  f, axarr = plt.subplots(1,3, dpi=300) 
+  axarr[0].imshow(a[0][FACIES].T)
+  axarr[1].imshow(a[0][PORO].T)
+  axarr[2].imshow(a[0][PERM].T)
 
   return anvil.mpl_util.plot_image()
 
