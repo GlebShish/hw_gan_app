@@ -104,7 +104,7 @@ class ModelManager:
         self.netI = FC_selu_first(input_size=nw, output_size=nz, hidden_layer_size=hidden_layer_size,
                                   num_extra_layers=num_extra_layers).to(self.device)
         if pretrained_netI:
-            self.netI.load_state_dict(torch.load('files/netI_{}.pt'.format(self.name)))
+            self.netI.load_state_dict(torch.load('files/netI_{}.pt'.format(self.name)), map_location=self.device)
             self.netI.eval()
 
     def normalize(self, arr):
