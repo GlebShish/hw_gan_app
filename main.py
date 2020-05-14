@@ -24,6 +24,9 @@ import anvil.mpl_util
 
 import sys
 
+FACIES = 0
+PORO = 1
+PERM = 2 
 
 seed = 42
 
