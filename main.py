@@ -2,7 +2,7 @@ import os
 import argparse
 import logging
 import numpy as np
-#from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 import torch
 import torch.optim as optim
@@ -13,7 +13,7 @@ import json
 cudnn.benchmark = True
 
 import matplotlib.pyplot as plt
-#import cv2
+# import cv2
 # import utils
 from models.progressive_gan import ProgressiveGAN as ProGAN
 from models.model_module import FC_selu_first
@@ -26,7 +26,7 @@ import sys
 
 FACIES = 0
 PORO = 1
-PERM = 2 
+PERM = 2
 
 seed = 42
 
@@ -74,7 +74,7 @@ def get_acc(imgs, ijs, vals):
 
 
 class ModelManager:
-    def __init__(self, name):
+    def __init__(self, name, pretrained_netI=False):
         """
 
         :param name: name of the model: object, sis or mps
@@ -103,6 +103,9 @@ class ModelManager:
 
         self.netI = FC_selu_first(input_size=nw, output_size=nz, hidden_layer_size=hidden_layer_size,
                                   num_extra_layers=num_extra_layers).to(self.device)
+        if pretrained_netI:
+            self.netI.load_state_dict(torch.load('files/netI_{}.pt'.format(self.name), map_location=torch.device('cpu')))
+            self.netI.eval()
 
     def normalize(self, arr):
         arr = arr.T
@@ -180,63 +183,114 @@ class ModelManager:
 
 @anvil.server.callable
 def get_sis():
-  a, b = sis.predict(1, 1)
+    a, b = sis.predict(1, 1)
 
-  f, axarr = plt.subplots(1,3, dpi=300) 
-  axarr[0].imshow(a[0][FACIES].T)
-  axarr[1].imshow(a[0][PORO].T)
-  axarr[2].imshow(a[0][PERM].T)
+    f, axarr = plt.subplots(1, 3, dpi=300)
+    facies_img = a[0][FACIES]
+    facies_img[facies_img < 0.5] = 0
+    facies_img[facies_img > 0.5] = 1
 
-  return anvil.mpl_util.plot_image()
+    poro_img = a[0][PORO]
+    poro_img[facies_img == 0] = 0
+
+    perm_img = a[0][PERM]
+    perm_img[facies_img == 0] = 0
+
+    c1 = axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    show_dots(axarr[0])
+    c2 = axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[1])
+    c3 = axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[2])
+    
+    return anvil.mpl_util.plot_image()
 
 
 @anvil.server.callable
 def get_mps():
-  a, b = mps.predict(1, 1)
+    a, b = mps.predict(1, 1)
 
-  f, axarr = plt.subplots(1,3, dpi=300) 
-  axarr[0].imshow(a[0][FACIES].T)
-  axarr[1].imshow(a[0][PORO].T)
-  axarr[2].imshow(a[0][PERM].T)
+    f, axarr = plt.subplots(1, 3, dpi=300)
 
-  return anvil.mpl_util.plot_image()
+    facies_img = a[0][FACIES]
+    facies_img[facies_img < 0.5] = 0
+    facies_img[facies_img > 0.5] = 1
+
+    poro_img = a[0][PORO]
+    poro_img[facies_img == 0] = 0
+
+    perm_img = a[0][PERM]
+    perm_img[facies_img == 0] = 0
+
+    axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    show_dots(axarr[0])
+    axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[1])
+    axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[2])
+
+    return anvil.mpl_util.plot_image()
+
+
+def show_dots(axs):
+    idx_pos = np.where(vals[:, 0] < 0.5)
+    idx_neg = np.where(vals[:, 0] > 0.5)
+
+    axs.scatter(ijs[idx_pos][:, 0], ijs[idx_pos][:, 1], marker='+', color='green')
+    axs.scatter(ijs[idx_neg][:, 0], ijs[idx_neg][:, 1], marker='*', color='blue')
 
 
 @anvil.server.callable
 def get_object():
-  a, b = obj.predict(1, 1)
-  
-  f, axarr = plt.subplots(1,3, dpi=300) 
-  axarr[0].imshow(a[0][FACIES].T)
-  axarr[1].imshow(a[0][PORO].T)
-  axarr[2].imshow(a[0][PERM].T)
+    a, b = obj.predict(1, 1)
 
-  return anvil.mpl_util.plot_image()
+    f, axarr = plt.subplots(1, 3, dpi=300)
+
+    facies_img = a[0][FACIES]
+    facies_img[facies_img < 0.5] = 0
+    facies_img[facies_img > 0.5] = 1
+
+    poro_img = a[0][PORO]
+    poro_img[facies_img == 0] = 0
+
+    perm_img = a[0][PERM]
+    perm_img[facies_img == 0] = 0
+
+    axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    show_dots(axarr[0])
+    axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[1])
+    axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    show_dots(axarr[2])
+
+    return anvil.mpl_util.plot_image()
 
 
 def test():
-	manager = ModelManager('sis')
-	ijs = np.load('test_ijs.npy')
-	vals = np.load('test_vals.npy').T
-	manager.train(ijs, vals)
-	a, b = manager.predict(16, 8)
-	np.save('output', a)
-	np.save('check', b)
+    manager = ModelManager('sis')
+    ijs = np.load('test_ijs.npy')
+    vals = np.load('test_vals.npy').T
+    manager.train(ijs, vals)
+    a, b = manager.predict(16, 8)
+    np.save('output', a)
+    np.save('check', b)
 
 
-sis = ModelManager('sis')
-mps = ModelManager('mps')
-obj = ModelManager('object')
+ijs = np.load('test_ijs.npy')
+vals = np.load('test_vals.npy')
 
+sis = ModelManager('sis', pretrained_netI=True)
+mps = ModelManager('mps', pretrained_netI=True)
+obj = ModelManager('object', pretrained_netI=True)
 
 if __name__ == '__main__':
 
-	if len(sys.argv) < 2:
-		sys.exit(1)
+    if len(sys.argv) < 2:
+        sys.exit(1)
 
-	while True:
-		anvil.server.connect(sys.argv[1])
+    while True:
+        anvil.server.connect(sys.argv[1])
 
-		#sis = ModelManager('sis')
-		#mps = ModelManager('mps')
-		#obj = ModelManager('object')
+    # sis = ModelManager('sis')
+    # mps = ModelManager('mps')
+    # obj = ModelManager('object')
