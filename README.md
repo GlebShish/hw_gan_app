@@ -6,5 +6,5 @@ To deply backend part you need `linux` and installed `docker`. GPU is not nesses
 
 2. run deploy script
 ```
-bash deploy
+bash deploy.sh
 ```
