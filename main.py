@@ -28,6 +28,10 @@ FACIES = 0
 PORO = 1
 PERM = 2
 
+SMALL_SIZE = 6
+plt.rc('font', size=SMALL_SIZE)
+plt.rc('axes', titlesize=SMALL_SIZE)
+
 seed = 42
 
 alpha = 0.1
