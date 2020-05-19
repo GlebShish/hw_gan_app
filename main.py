@@ -185,7 +185,8 @@ class ModelManager:
 def get_sis():
     a, b = sis.predict(1, 1)
 
-    f, axarr = plt.subplots(1, 3, dpi=300)
+    f, axarr = plt.subplots(1, 3, dpi=400, tight_layout=True)
+
     facies_img = a[0][FACIES]
     facies_img[facies_img < 0.5] = 0
     facies_img[facies_img > 0.5] = 1
@@ -196,11 +197,19 @@ def get_sis():
     perm_img = a[0][PERM]
     perm_img[facies_img == 0] = 0
 
-    c1 = axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    a = axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    axarr[0].set_xlabel("Фации")
+    cbar1 = f.colorbar(a , ax=axarr[0], shrink=0.3, cmap='gray')
     show_dots(axarr[0])
-    c2 = axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+
+    b = axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    axarr[1].set_xlabel("Пористость")
+    cbar2 = f.colorbar(b, ax=axarr[1], shrink=0.3, cmap='hot')
     show_dots(axarr[1])
-    c3 = axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+
+    c = axarr[PERM].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    axarr[2].set_xlabel("Проницаемость")
+    cbar3 = f.colorbar(c, ax=axarr[2], shrink=0.3, cmap='hot')
     show_dots(axarr[2])
     
     return anvil.mpl_util.plot_image()
@@ -209,8 +218,8 @@ def get_sis():
 @anvil.server.callable
 def get_mps():
     a, b = mps.predict(1, 1)
-
-    f, axarr = plt.subplots(1, 3, dpi=300)
+    
+    f, axarr = plt.subplots(1, 3, dpi=400, tight_layout=True)
 
     facies_img = a[0][FACIES]
     facies_img[facies_img < 0.5] = 0
@@ -222,11 +231,19 @@ def get_mps():
     perm_img = a[0][PERM]
     perm_img[facies_img == 0] = 0
 
-    axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    a = axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    axarr[0].set_xlabel("Фации")
+    cbar1 = f.colorbar(a , ax=axarr[0], shrink=0.3, cmap='gray')
     show_dots(axarr[0])
-    axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+
+    b = axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    axarr[1].set_xlabel("Пористость")
+    cbar2 = f.colorbar(b, ax=axarr[1], shrink=0.3, cmap='hot')
     show_dots(axarr[1])
-    axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+
+    c = axarr[PERM].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    axarr[2].set_xlabel("Проницаемость")
+    cbar3 = f.colorbar(c, ax=axarr[2], shrink=0.3, cmap='hot')
     show_dots(axarr[2])
 
     return anvil.mpl_util.plot_image()
@@ -244,7 +261,7 @@ def show_dots(axs):
 def get_object():
     a, b = obj.predict(1, 1)
 
-    f, axarr = plt.subplots(1, 3, dpi=300)
+    f, axarr = plt.subplots(1, 3, dpi=400, tight_layout=True)
 
     facies_img = a[0][FACIES]
     facies_img[facies_img < 0.5] = 0
@@ -256,11 +273,19 @@ def get_object():
     perm_img = a[0][PERM]
     perm_img[facies_img == 0] = 0
 
-    axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    a = axarr[0].matshow(facies_img, cmap=plt.get_cmap("gray"))
+    axarr[0].set_xlabel("Фации")
+    cbar1 = f.colorbar(a , ax=axarr[0], shrink=0.3, cmap='gray')
     show_dots(axarr[0])
-    axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+
+    b = axarr[1].matshow(poro_img, cmap=plt.get_cmap("hot"))
+    axarr[1].set_xlabel("Пористость")
+    cbar2 = f.colorbar(b, ax=axarr[1], shrink=0.3, cmap='hot')
     show_dots(axarr[1])
-    axarr[2].matshow(perm_img, cmap=plt.get_cmap("hot"))
+
+    c = axarr[PERM].matshow(perm_img, cmap=plt.get_cmap("hot"))
+    axarr[2].set_xlabel("Проницаемость")
+    cbar3 = f.colorbar(c, ax=axarr[2], shrink=0.3, cmap='hot')
     show_dots(axarr[2])
 
     return anvil.mpl_util.plot_image()
