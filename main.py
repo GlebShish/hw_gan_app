@@ -223,7 +223,7 @@ def get_sis():
 def get_mps():
     a, b = mps.predict(1, 1)
     
-    f, axarr = plt.subplots(1, 3, dpi=400, tight_layout=True, figsize=(15,15))
+    f, axarr = plt.subplots(1, 3, dpi=400, tight_layout=True)
 
     facies_img = a[0][FACIES]
     facies_img[facies_img < 0.5] = 0
